@@ -1,0 +1,403 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Work — Portfolio</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<div id="morphOverlay" class="morph-overlay"></div>
+<!-- Contact popup -->
+<div
+  class="contact-popup"
+  id="contactPopup"
+  aria-hidden="true"
+>
+  <div
+    class="contact-popup-inner"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="contactPopupTitle"
+  >
+    <div class="contact-popup-header">
+      <h2 id="contactPopupTitle">Get in touch</h2>
+      <button
+        class="contact-popup-close"
+        type="button"
+        data-close-contact
+        aria-label="Close contact options"
+      >
+        ✕
+      </button>
+    </div>
+
+    <div class="contact-popup-body">
+      <p class="contact-popup-sub">Choose how you’d like to reach me:</p>
+      <div class="contact-list">
+        <!-- Phone -->
+        <a class="contact-item" href="tel:+918197777861">
+          <span class="contact-icon">📞</span>
+          <span class="contact-text">
+            <span class="contact-label">Call</span>
+            <span class="contact-detail">+91 81977 77861</span>
+          </span>
+        </a>
+
+        <!-- Email -->
+        <a class="contact-item" href="mailto:arumohan2004@gmail.com">
+          <span class="contact-icon">✉️</span>
+          <span class="contact-text">
+            <span class="contact-label">Email</span>
+            <span class="contact-detail">arumohan2004@gmail.com</span>
+          </span>
+        </a>
+
+        <!-- Behance -->
+        <a class="contact-item" href="https://www.behance.net/aryamohan4" target="_blank" rel="noopener">
+          <span class="contact-icon">🅱️</span>
+          <span class="contact-text">
+            <span class="contact-label">Behance</span>
+            <span class="contact-detail">View my projects</span>
+          </span>
+        </a>
+
+        <!-- LinkedIn -->
+        <a class="contact-item" href="https://www.linkedin.com/in/arya-mohan-60b3a7243/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text">
+            <span class="contact-label">LinkedIn</span>
+            <span class="contact-detail">Connect professionally</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<body data-page="work">
+
+  <!-- TOPBAR (same structure as index.html) -->
+  <header class="topbar" role="banner" aria-label="Top header">
+    <div class="topbar-inner">
+      <a href="index.html" class="brand" style="text-decoration:none; color:inherit;">
+        <img
+          src="images/logo-dark.png"
+          class="brand-logo"
+          data-dark-src="images/logo-dark.png"
+          data-light-src="images/logo-light.png"
+          onerror="this.style.display='none'"
+        >
+        <div class="brand-text">
+          <div class="brand-name">Arya Mohan</div>
+          <div class="brand-sub">Experience & Interaction Designer</div>
+        </div>
+      </a>
+
+      <div class="topbar-actions">
+        <!-- CV / RESUME BUTTON -->
+        <a class="btn cv-btn" href="resume.pdf" target="_blank" rel="noopener" aria-label="Download CV or open resume">
+          <!-- Inline SVG Document Icon -->
+          <svg class="cv-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <path d="M14 3v5h5"></path>
+              <path d="M8 13h8M8 17h8" stroke-opacity="0.9"></path>
+            </g>
+          </svg>
+
+          <!-- Text (shown on desktop, hidden on mobile) -->
+          <span class="cv-label">CV / Resume</span>
+        </a>
+
+        <button id="themeToggle" class="svg-theme-btn" aria-label="Toggle theme" title="Toggle theme">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" role="img">
+            <path class="icon-moon" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor"/>
+            <g class="icon-sun" fill="currentColor">
+              <path d="M12 4V2M12 22v-2M4.22 4.22L2.81 2.81M21.19 21.19l-1.41-1.41M1 12H3M21 12h2M4.22 19.78l-1.41 1.41M21.19 2.81l-1.41 1.41" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="3"/>
+            </g>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- full-viewport container (keeps same DOM surface as index) -->
+  <div id="container" aria-hidden="false" style="width:100vw;height:100vh;position:relative;overflow:hidden;">
+
+    <!-- WORK VIEW WRAPPER: this element will get canvas-like width & left offset via JS -->
+    <div id="workCanvasSizer" style="position:absolute;left:0;top:0;height:100%;box-sizing:border-box;">
+      <!-- workView sits inside this sized wrapper and occupies the vertical space between topbar and capsule -->
+      <main id="workView" style="position:absolute;left:0;right:0;overflow:hidden;">
+        <div class="work-top" style="margin-bottom:4px; position:relative; z-index:50;">
+          <div id="workTags" class="work-tags"></div>
+        </div>
+
+        <!-- IMPORTANT: work.js inserts the .work-rail DIRECTLY into #workContent -->
+        <div id="workContent" class="work-content" role="region" aria-live="polite"></div>
+
+        <!-- MOBILE-FALLBACK: vertical list for small screens.
+             Hidden by default; work.js will toggle visibility when width < 768px -->
+        <div id="mobileWork" class="mobile-work hidden" aria-hidden="true"></div>
+
+        <div id="projectLabel" class="project-label" aria-hidden="true"></div>
+      </main>
+    </div>
+
+  </div>
+
+  <!-- capsule nav — unchanged markup (Work kept active here) -->
+  <div class="capsule" role="navigation" aria-label="Site navigation">
+    <button class="nav-btn active" data-key="work" data-img="images/work.jpg" aria-current="page">Work</button>
+    <a class="nav-btn" href="about.html" data-key="about" data-img="images/about.jpg" aria-label="About">About</a>
+    <button
+      id="contactNavBtn"
+      class="nav-btn"
+      data-key="contact"
+      data-img="images/contact.jpg"
+      aria-haspopup="dialog"
+      aria-expanded="false"
+    >
+      Contact
+    </button>
+  </div>
+
+  <!-- cleaned work logic (should be the file you already placed) -->
+  <script src="work.js"></script>
+
+  <!-- THEME INIT (keeps same behavior as index) -->
+  <script>
+  (function(){
+    const btn = document.getElementById('themeToggle');
+    const body = document.body;
+    const logo = document.querySelector('.brand-logo'); // <-- NEW LINE
+    if (!btn || !logo) return;
+
+    // NEW: function to set the logo based on theme
+    function updateLogo(isLight) {
+      const lightSrc = logo.getAttribute('data-light-src');
+      const darkSrc  = logo.getAttribute('data-dark-src');
+      if (isLight && lightSrc) {
+        logo.src = lightSrc;
+      } else if (!isLight && darkSrc) {
+        logo.src = darkSrc;
+      }
+    }
+
+    function setTheme(t) {
+      const isLight = t === 'light';
+      body.classList.toggle('light', isLight);
+      btn.classList.toggle('is-light', isLight);
+      localStorage.setItem('site-theme', t);
+      updateLogo(isLight); // <-- NEW: update the logo here
+      if (window.updateSketchTheme) window.updateSketchTheme(t); // safe call
+    }
+
+    const saved = localStorage.getItem('site-theme') || 'dark';
+    setTheme(saved);
+
+    btn.addEventListener('click', ()=> {
+      const newTheme = document.body.classList.contains('light') ? 'dark' : 'light';
+      setTheme(newTheme);
+    });
+
+    btn.addEventListener('keydown', e => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault(); btn.click();
+      }
+    });
+  })();
+  </script>
+
+
+  <!-- ALIGNMENT: make workCanvasSizer match the canvas dimensions the sketch creates -->
+  <script>
+  (function(){
+    // Use same pad as the sketch did (the sketch used pad=100)
+    const PAD = 100;
+    const MIN_WIDTH = 420; // sensible minimum
+    const REFRESH_DEBOUNCE = 60;
+    let tId = null;
+
+    function computeCanvasWidth() {
+      // width the sketch would create: windowWidth - pad*2
+      return Math.max(MIN_WIDTH, window.innerWidth - PAD * 2);
+    }
+
+    function alignToCanvasSize() {
+      // SAFEGUARD: don't attempt desktop canvas alignment on small screens
+      if (window.innerWidth <= 768) {
+        // restore natural (CSS-managed) topbar and sizer on mobile
+        const topbar = document.querySelector('.topbar');
+        const sizer = document.getElementById('workCanvasSizer');
+        const workView = document.getElementById('workView');
+
+        if (topbar) {
+          topbar.style.transform = ''; /* let CSS handle centering */
+          topbar.style.left = '';
+          topbar.style.width = '';
+        }
+        if (sizer) {
+          sizer.style.left = '';
+          sizer.style.width = '';
+          sizer.style.position = '';
+          sizer.style.maxWidth = '';
+        }
+        if (workView) {
+          workView.style.left = '';
+          workView.style.top = '';
+          workView.style.right = '';
+          workView.style.bottom = '';
+          workView.style.width = '';
+          workView.style.position = '';
+        }
+        return;
+      }
+
+      const sizer = document.getElementById('workCanvasSizer');
+      const topbar = document.querySelector('.topbar');
+      const capsule = document.querySelector('.capsule');
+
+      if (!sizer || !topbar) return;
+
+      const cw = computeCanvasWidth();
+      // left offset where the sketch positioned its canvas (pad)
+      const left = PAD;
+
+      // set sizer width & left (position inside #container)
+      sizer.style.width = cw + 'px';
+      sizer.style.left = left + 'px';
+
+      // compute vertical placement: top below topbar (topbar has its own top offset)
+      const topbarRect = topbar.getBoundingClientRect();
+      // set workView top and bottom so it sits between topbar bottom and capsule top
+      const workView = document.getElementById('workView');
+      if (!workView) return;
+
+      // distance from viewport top to topbar bottom (includes page scroll)
+      const top = topbarRect.bottom + 8; // small gap of 8px
+      // capsule top (if present) or bottom of viewport
+      const capRect = capsule ? capsule.getBoundingClientRect() : { top: window.innerHeight };
+      const bottomGap = Math.max(120, window.innerHeight - capRect.top + 12); // keep similar spacing as before
+
+      // set workView positioning inside the sizer (sizer is positioned relative to container)
+      workView.style.top = top + 'px';
+      workView.style.bottom = bottomGap + 'px';
+      workView.style.left = '0px';
+      workView.style.width = '100%';
+      workView.style.position = 'absolute';
+      workView.style.boxSizing = 'border-box';
+
+      // align the topbar horizontally to the same cw & left (so topbar left edge lines up)
+      topbar.style.width = cw + 'px';
+      // Because topbar has transform translateX(-50%) in CSS, remove it and use explicit left
+      topbar.style.transform = 'none';
+      topbar.style.left = left + 'px';
+
+      // ensure capsule is still centered on the viewport; do not change capsule positioning
+      // but keep a small reflow for rail layout
+      setTimeout(() => {
+        // let work.js compute rail widths now
+        if (window._workRailState && window._workRailState.inner) {
+          // update bounds if present
+          if (typeof window._workRailState.inner.requestUpdateBounds === 'function') {
+            try { window._workRailState.inner.requestUpdateBounds(); } catch(e) {}
+          }
+        }
+      }, 40);
+    }
+
+    // debounce on resize / orientationchange
+    function scheduleAlign(){
+      if (tId) clearTimeout(tId);
+      tId = setTimeout(alignToCanvasSize, REFRESH_DEBOUNCE);
+    }
+
+    window.addEventListener('resize', scheduleAlign);
+    window.addEventListener('orientationchange', scheduleAlign);
+    // also reposition once work.js has rendered the rail (small delay)
+    window.addEventListener('load', ()=> { setTimeout(alignToCanvasSize, 30); setTimeout(alignToCanvasSize, 260); });
+    // If work.js dispatches an event after it mounts content, listen to it:
+    window.addEventListener('workview:rendered', ()=> setTimeout(alignToCanvasSize, 20));
+  })();
+  </script>
+
+    <script>
+    (function () {
+      const contactBtn = document.getElementById('contactNavBtn');
+      const popup = document.getElementById('contactPopup');
+      if (!contactBtn || !popup) return;
+
+      const closeBtn = popup.querySelector('[data-close-contact]');
+      const focusableSelector = 'a[href], button:not([disabled])';
+      let lastFocusedElement = null;
+
+      function openContactPopup() {
+        lastFocusedElement = document.activeElement;
+
+        popup.classList.add('is-open');
+        document.body.classList.add('contact-open');
+        popup.setAttribute('aria-hidden', 'false');
+        contactBtn.setAttribute('aria-expanded', 'true');
+
+        const firstFocusable = popup.querySelector(focusableSelector);
+        if (firstFocusable) firstFocusable.focus();
+      }
+
+      function closeContactPopup() {
+        popup.classList.remove('is-open');
+        document.body.classList.remove('contact-open');
+        popup.setAttribute('aria-hidden', 'true');
+        contactBtn.setAttribute('aria-expanded', 'false');
+
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+      }
+
+      // open on click
+      contactBtn.addEventListener('click', function () {
+        const isOpen = popup.classList.contains('is-open');
+        if (isOpen) {
+          closeContactPopup();
+        } else {
+          openContactPopup();
+        }
+      });
+
+      // (button semantics already handle Enter/Space, but we keep it consistent)
+      contactBtn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          contactBtn.click();
+        }
+      });
+
+      // close button
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+          closeContactPopup();
+        });
+      }
+
+      // click backdrop to close
+      popup.addEventListener('click', function (e) {
+        if (e.target === popup) {
+          closeContactPopup();
+        }
+      });
+
+      // ESC to close
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && popup.classList.contains('is-open')) {
+          e.preventDefault();
+          closeContactPopup();
+        }
+      });
+    })();
+    </script>
+  </body>
+  </html>
+
+
+</body>
+</html>
