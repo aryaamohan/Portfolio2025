@@ -1,0 +1,396 @@
+/* ---------- RESET ---------- */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  background: #0b0b0c;
+  font-family: Inter, system-ui;
+  color: #dcdcdc;
+}
+
+/* ---------- HERO ---------- */
+.project-hero {
+  position: relative;
+  height: 100vh;
+  min-height: 620px;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(.20) saturate(.9);
+  z-index: 1;
+  will-change: transform;
+  transform: translateY(0);
+  transition: transform .05s linear;
+}
+
+.project-close {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 46px;
+  height: 46px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,.45);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+
+/* HERO TEXT */
+.hero-panel {
+  position: absolute;
+  right: 12%;
+  top: 28%;
+  width: 512px;
+  z-index: 5;
+  color: white;
+  will-change: transform;
+  transform: translateY(0);
+}
+
+.hero-title {
+  margin: 0 0 18px 0;
+  font-size: 46px;
+  font-weight: 600;
+}
+
+.hero-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.meta-block h4 {
+  margin: 0 0 4px 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.meta-block p {
+  margin: 0;
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+/* SCROLL INDICATOR */
+.scroll-indicator {
+  position: fixed;
+  right: 40px;
+  bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  color: white;
+  z-index: 10;
+  background: transparent;
+}
+
+.scroll-circle {
+  width: 56px;
+  height: 56px;
+  border: 2px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* hide minimap and indicator during hero */
+body.not-in-body .mini-map {
+  opacity: 0;
+  pointer-events: none;
+}
+body.not-in-body .scroll-indicator {
+  opacity: 1;
+}
+
+/* ---------- PROJECT BODY ---------- */
+.project-body {
+  width: 100%;
+  padding-bottom: 200px;
+}
+
+.pdf-container {
+  width: min(90%, 1100px);
+  margin: 80px auto 0;
+  margin-bottom: 0 !important;
+}
+
+.pdf-page {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+
+.pdf-page.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pdf-page img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ---------- MINIMAP (right rail) ---------- */
+.mini-map {
+  position: fixed;
+  top: 120px;
+  right: 24px;
+  width: 50px;       /* <—— YOUR CHOSEN WIDTH */
+  opacity: 0;
+  transition: opacity .25s ease-out;
+  z-index: 50;
+}
+
+/* mini document stack */
+.mini-doc {
+  width: 100%;
+  transform-origin: top;
+  will-change: transform;
+}
+
+.mini-page {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  display: block;
+}
+
+/* minimap frame */
+.mini-frame {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border: 2px solid rgba(255,255,255,0.95);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.06);
+  pointer-events: auto;
+  cursor: grab;
+}
+.mini-frame.dragging {
+  cursor: grabbing;
+}
+
+/* show minimap after hero */
+body.in-body .mini-map {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.figma-section {
+  width: min(90%, 1100px);
+  margin: 120px auto 80px;
+  margin-top: 0 !important;
+}
+
+.figma-section {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+
+.figma-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- MINIMAP (fixed) ---------- */
+.mini-map {
+  position: fixed;
+  top: 120px;
+  right: 24px;
+  width: 50px;       /* your chosen width */
+  height: calc(100vh - 240px); /* make it fit the viewport */
+  overflow: visible;   /* IMPORTANT: hide overflow so scaling doesn't create scroll */
+  z-index: 50;
+  pointer-events: auto;
+}
+
+/* mini document stack (we will scale this with JS) */
+.mini-doc {
+  transform-origin: top left;
+  will-change: transform;
+  display: block;
+}
+
+/* each mini page keeps its aspect ratio */
+.mini-page {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/* MINI FRAME: slightly wider than miniDoc and centered horizontally */
+.mini-frame {
+  position: absolute;
+  left: 50%;                       /* center over miniDoc */
+  transform: translateX(-50%);     /* center align */
+  width: calc(100% + 24px);        /* wider than mini-doc by 24 (12px each side) */
+  box-sizing: border-box;
+  border: 2px solid rgba(255,255,255,0.95);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  pointer-events: auto;
+  cursor: grab;
+  z-index: 60;
+  /* visual smoothing for motion */
+  will-change: top, transform;
+  transition: box-shadow 140ms linear;
+}
+
+/* dragging cursor */
+.mini-frame.dragging { cursor: grabbing; box-shadow: 0 12px 30px rgba(0,0,0,0.45); }
+
+/* ensure mini-doc transform doesn't affect horizontal alignment */
+.mini-doc { transform-origin: top left; }
+
+/* ensure miniMap doesn't produce its own scrollbars */
+.mini-map::-webkit-scrollbar { display: none; }
+
+
+/* ----- MOBILE (phones) ----- */
+@media (max-width: 599px) {
+
+  .mini-map {
+    display: none !important;
+  }
+
+  .pdf-container {
+    width: 100%;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin: 40px auto 60px;
+    margin-bottom: 0 !important;
+  }
+
+  .figma-section {
+    width: 100%;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-top: 0 !important;
+  }
+
+  .project-close {
+    left: 16px;
+    top: 16px;
+    transform: scale(0.85);
+  }
+
+  .hero-panel {
+    width: auto;
+    right: 24px;
+    left: 24px;
+    top: 30%;
+  }
+
+  .hero-title {
+    font-size: 32px;
+    line-height: 1.1;
+  }
+
+  .meta-block p {
+    font-size: 14px;
+  }
+
+  .scroll-indicator {
+    right: 24px;
+    bottom: 24px;
+    transform: scale(0.85);
+  }
+}
+
+/* ----- TABLET (portrait & small landscape) ----- */
+@media (min-width: 600px) and (max-width: 1023px) {
+
+  .mini-map {
+    right: 12px;
+    top: 60px;
+  }
+
+  .pdf-container {
+    width: calc(100% - 140px); /* 140 = rail + gap */
+    margin: 60px auto;
+    margin-bottom: 0 !important;
+  }
+
+  .figma-section {
+    width: calc(100% - 140px);
+    margin-top: 0 !important;
+  }
+
+  .hero-panel {
+    width: 330px;
+    right: 12%;
+    top: 24%;
+  }
+
+  .hero-title {
+    font-size: 38px;
+  }
+}
+
+/* ----- LARGE TABLET (iPad Pro) ----- */
+@media (min-width: 1024px) and (max-width: 1366px) {
+
+  .mini-map {
+    right: 20px;
+  }
+
+  .pdf-container {
+    width: calc(100% - 200px);
+    margin-bottom: 0 !important;
+  }
+
+  .figma-section {
+    width: calc(100% - 200px);
+    margin-top: 0 !important;
+  }
+
+}
+
+/* TAG CAPSULES */
+.tags span {
+  display: inline-block;
+  padding: 5px 12px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  font-size: 13px;
+  color: white;
+  margin-right: 8px;
+  margin-top: 6px;
+  backdrop-filter: blur(4px);
+}
+
+/* -----------------------------
+   PAGE CROSSFADE TRANSITION
+----------------------------- */
+
+body {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+.page-fade-out {
+  opacity: 0 !important;
+}
+

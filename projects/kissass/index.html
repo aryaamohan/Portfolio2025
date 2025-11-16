@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Travel Planner — Case Study</title>
+  <link rel="stylesheet" href="project.css" />
+</head>
+
+<body>
+
+  <!-- HERO -->
+  <header class="project-hero" id="hero">
+
+    <button id="closeBtn" class="project-close">✕</button>
+
+    <div id="heroBg" class="hero-bg"></div>
+
+    <div class="hero-panel">
+      <h1 id="heroTitle">Project Title</h1>
+
+      <div class="hero-meta">
+        <div class="meta-block">
+          <h4>Abstract</h4>
+          <p id="metaAbstract"></p>
+        </div>
+
+        <div class="meta-block">
+          <h4>Role</h4>
+          <p id="metaRole"></p>
+        </div>
+
+        <div class="meta-block">
+          <h4>Tags</h4>
+          <div id="metaTags" class="tags"></div>
+        </div>
+        
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <button id="scrollIndicator" class="scroll-indicator">
+      <span id="scrollLabel">Scroll down</span>
+      <div class="scroll-circle"><span id="scrollArrow">↓</span></div>
+    </button>
+
+  </header>
+
+
+  <!-- PROJECT BODY -->
+  <main id="projectBody" class="project-body">
+
+    <section id="pdfContainer" class="pdf-container">
+
+      <article class="pdf-page" id="page-1">
+        <img src="assets/pdf-page-1.jpg" alt="">
+      </article>
+
+      <article class="pdf-page" id="page-2">
+        <img src="assets/pdf-page-2.jpg" alt="">
+      </article>
+
+      <article class="pdf-page" id="page-3">
+        <img src="assets/pdf-page-3.jpg" alt="">
+      </article>
+
+      <article class="pdf-page" id="page-4">
+        <img src="assets/pdf-page-4.jpg" alt="">
+      </article>
+
+      <article class="pdf-page" id="page-5">
+        <img src="assets/pdf-page-5.jpg" alt="">
+      </article>
+
+      <article class="pdf-page" id="page-6">
+        <img src="assets/pdf-page-6.jpg" alt="">
+      </article>
+
+      <article class="pdf-page" id="page-7">
+        <img src="assets/pdf-page-7.jpg" alt="">
+      </article>
+
+      <article class="pdf-page" id="page-8">
+        <img src="assets/pdf-page-8.jpg" alt="">
+      </article>
+
+      <article class="pdf-page" id="page-9">
+        <img src="assets/pdf-page-9.jpg" alt="">
+      </article>
+
+    </section>
+
+
+  </main>
+
+
+  <!-- MINIMAP -->
+  <aside id="miniMap" class="mini-map">
+
+    <div id="miniDoc" class="mini-doc">
+      <img class="mini-page" data-target="page-1" src="assets/pdf-page-1.jpg">
+      <img class="mini-page" data-target="page-2" src="assets/pdf-page-2.jpg">
+      <img class="mini-page" data-target="page-3" src="assets/pdf-page-3.jpg">
+      <img class="mini-page" data-target="page-4" src="assets/pdf-page-4.jpg">
+      <img class="mini-page" data-target="page-5" src="assets/pdf-page-5.jpg">
+      <img class="mini-page" data-target="page-6" src="assets/pdf-page-6.jpg">
+      <img class="mini-page" data-target="page-7" src="assets/pdf-page-7.jpg">
+      <img class="mini-page" data-target="page-8" src="assets/pdf-page-8.jpg">
+      <img class="mini-page" data-target="page-9" src="assets/pdf-page-9.jpg">
+    </div>
+
+    <div id="miniFrame" class="mini-frame"></div>
+
+  </aside>
+
+  <script src="project.js"></script>
+</body>
+</html>
